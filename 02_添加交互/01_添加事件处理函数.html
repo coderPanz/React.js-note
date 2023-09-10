@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+    <!-- Don't use this in production: -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+      // 使用 React 可以在 JSX 中添加 事件处理函数。其中事件处理函数为自定义函数，它将在响应交互（如点击、悬停、表单输入框获得焦点等）时触发。
+      // 事件处理函数有如下特点:1. 通常在你的组件 内部 定义。2. 名称以 handle 开头，后跟事件名称。
+      // 方式一
+      // function Show() {
+      //   function handleClick() {
+      //     alert('你好!')
+      //   }
+      //   return <button onClick={handleClick}>点击弹出</button>
+      // }
+
+      // 方式二
+      function Show() {
+        return <button onClick={() => alert('你好!')}>点击弹出</button>
+      }
+      const container = document.getElementById("root");
+      const root = ReactDOM.createRoot(container);
+      root.render(<Show />);
+    </script>
+  </body>
+</html>

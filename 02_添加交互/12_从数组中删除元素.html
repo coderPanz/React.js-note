@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+    <!-- Don't use this in production: -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+      // 从数组中删除一个元素最简单的方法就是将它过滤出去。换句话说，你需要生成一个不包含该元素的新数组。这可以通过 filter 方法实现
+      const chList = [
+        { id: 0, name: '爱, 很简单' },
+        { id: 1, name: '七里香' },
+        { id: 2, name: '心中的日月' },
+        { id: 3, name: '交换余生' },
+      ]
+      function List() {
+        const [ songList, setSongList ] = React.useState(chList)
+        return (
+          <>
+            <h1>中文十大金曲</h1>
+            <ul>
+              {songList.map((item) => {
+                return (
+                  <li key={item.id}>{item.name}{' '}
+                    <button onClick={() => {
+                      setSongList(
+                        songList.filter(a => a.id !== item.id)
+                      )
+                    }}>删除</button>
+                  </li>
+                )
+              })}
+            </ul>
+          </>
+        )
+      }
+      const container = document.getElementById("root");
+      const root = ReactDOM.createRoot(container);
+      root.render(<List />);
+    </script>
+  </body>
+</html>

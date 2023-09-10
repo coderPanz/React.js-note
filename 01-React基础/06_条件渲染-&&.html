@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+    <!-- Don't use this in production: -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+      // “当 isPacked 为真值时，则（&&）渲染勾选符号，否则，不渲染。”
+      function Item({ name, isPack }) {
+        return <li>{name} {isPack && "✔"}</li>
+      }
+      function PackingList() {
+        return (
+          <section>
+            <h1>清单列表</h1>
+            <ul>
+              <Item name="书包" isPack={true}/>
+              <Item name="手机" isPack={true}/>
+              <Item name="电脑" isPack={false}/>
+              <Item name="现金" isPack={true}/>
+            </ul>
+          </section>
+        )
+      }
+      const container = document.getElementById("root");
+      const root = ReactDOM.createRoot(container);
+      root.render(<PackingList />);
+    </script>
+  </body>
+</html>

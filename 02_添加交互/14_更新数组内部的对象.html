@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+    <!-- Don't use this in production: -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+      // 对象并不是 真的 位于数组“内部”。可能他们在代码中看起来像是在数组“内部”，但其实数组中的每个对象都是这个数组“指向”的一个存储于其它位置的值。
+      const initialList = [
+        { id: 0, title: "Big Bellies", seen: false },
+        { id: 1, title: "Lunar Landscape", seen: false },
+        { id: 2, title: "Terracotta Army", seen: true },
+      ];
+
+      function ItemList({ artworks, onToggle }) {
+        return (
+          <ul>
+            {artworks.map((artwork) => (
+              <li key={artwork.id}>
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={artwork.seen}
+                    onChange={(e) => {
+                      onToggle(artwork.id, e.target.checked);
+                    }}
+                  />
+                  {artwork.title}
+                </label>
+              </li>
+            ))}
+          </ul>
+        );
+      }
+
+      function BucketList() {
+        const [myList, setMyList] = React.useState(initialList);
+        const [yourList, setYourList] = React.useState(initialList);
+
+        function handleToggleMyList(artworkId, nextSeen) {
+          setMyList(
+            myList.map((artwork) => {
+              if (artwork.id === artworkId) {
+                // 创建包含变更的*新*对象
+                return { ...artwork, seen: nextSeen };
+              } else {
+                // 没有变更
+                return artwork;
+              }
+            })
+          );
+        }
+
+        function handleToggleYourList(artworkId, nextSeen) {
+          setYourList(
+            yourList.map((artwork) => {
+              if (artwork.id === artworkId) {
+                // 创建包含变更的*新*对象
+                return { ...artwork, seen: nextSeen };
+              } else {
+                // 没有变更
+                return artwork;
+              }
+            })
+          );
+        }
+
+        return (
+          <>
+            <h1>艺术愿望清单</h1>
+            <h2>我想看的艺术清单：</h2>
+            <ItemList artworks={myList} onToggle={handleToggleMyList} />
+            <h2>你想看的艺术清单：</h2>
+            <ItemList artworks={yourList} onToggle={handleToggleYourList} />
+          </>
+        );
+      }
+
+      const container = document.getElementById("root");
+      const root = ReactDOM.createRoot(container);
+      root.render(<BucketList />);
+    </script>
+  </body>
+</html>

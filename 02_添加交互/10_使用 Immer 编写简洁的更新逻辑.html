@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+    <!-- Don't use this in production: -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/immer"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+      // mmer 是一个用于管理 JavaScript 对象和数组的不可变状态的库。
+      const { produce }  = lmmer
+      function PersonInfos() {
+        const [person, setPerson] = React.useState({
+          name: "Niki de Saint Phalle",
+          artwork: {
+            title: "Blue Nana",
+            city: "Hamburg",
+            image: "https://i.imgur.com/Sd1AgUOm.jpg",
+          },
+        });
+
+        function handleTitleChange(e) {
+          const nextState = produce(person, draftState => {
+            draftState.name = e.target.value
+          })
+          setPerson(nextState)
+        }
+
+        return (
+          <>
+            <lable>
+              Name: 
+              <input 
+                onChange={handleTitleChange} 
+                value={person.name}
+              />
+            </lable>
+          </>
+        )
+      }
+      const container = document.getElementById("root");
+      const root = ReactDOM.createRoot(container);
+      root.render(<PersonInfos />);
+    </script>
+  </body>
+</html>

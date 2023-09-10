@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+    <!-- Don't use this in production: -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+      // 不应该直接修改存放在 React state 中的对象。相反，当你想要更新一个对象时，你需要创建一个新的对象（或者将其拷贝一份），然后将 state 更新为此对象。
+      // 改变了存放在state中对象自身的内容。当你这样做时，就制造了一个 mutation
+      
+      // event.target 表示触发事件的元素，即当前的 <input> 元素。
+      // .value 是 <input> 元素的属性，用于获取或设置输入框的值。
+
+      function Person() {
+        const [person, setPerson] = React.useState({
+          name: 'messi',
+          age: 41
+        })
+        function handleNameChange(e) {
+          setPerson({
+            ...person,
+            // 会覆盖掉原来的属性
+            name: e.target.value
+          })
+        }
+        
+        function handleAgeChange(e) {
+          setPerson({
+            ...person,
+            age: e.target.value
+          })
+        }
+        // <label> 标签用于在 HTML 表单中定义输入控件（如 <input>、<textarea>、<select> 等）的标签或说明文本。
+        // onChange 是一个事件属性，用于指定在用户修改 <input> 元素的值时要触发的 JavaScript z`
+        return (
+          <>
+          <label>
+            Name: 
+            <input 
+              value={person.name}
+              onChange={handleNameChange}
+            />
+          </label>
+          <label>
+            Age: 
+            <input 
+              value={person.age}
+              onChange={handleAgeChange}
+            />
+          </label>
+          </>
+        )
+      }
+      const container = document.getElementById("root");
+      const root = ReactDOM.createRoot(container);
+      root.render(<Person />);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+    <!-- Don't use this in production: -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+      // 公共的按钮
+      function Button({ onClick, children }) {
+        return (
+          <button onClick={onClick}>{children}</button>
+        )
+      }
+
+      function WatchingMovies({ name }) {
+        function handleMovies() {
+          alert(name)
+        }
+        return(
+          <Button children='看电影' onClick={handleMovies} />
+        )
+      }
+
+      function Shopping({ name }) {
+        function handleShopping() {
+          alert(name)
+        }
+        return(
+          <Button children='购物' onClick={handleShopping} />
+        )
+      }
+
+      function Action() {
+        return(
+          <>
+          <Shopping name='购物'/>
+          <WatchingMovies name='看电影'/>
+          </>
+        )
+      }
+      const container = document.getElementById("root");
+      const root = ReactDOM.createRoot(container);
+      root.render(<Action />);
+    </script>
+  </body>
+</html>

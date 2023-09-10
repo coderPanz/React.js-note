@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+    <!-- Don't use this in production: -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+      function PersonInfos() {
+        const [person, setPerson] = React.useState({
+          name: "Niki de Saint Phalle",
+          artwork: {
+            title: "Blue Nana",
+            city: "Hamburg",
+            image: "https://i.imgur.com/Sd1AgUOm.jpg",
+          },
+        });
+
+        function handleTitleChange(e) {
+          setPerson({
+            ...person,
+            artwork: {
+              ...person.artwork,
+              [e.target.name]: e.target.value,
+            },
+          });
+        }
+
+        return (
+          <>
+            <lable>
+              title: 
+              <input 
+                name="title" 
+                onChange={handleTitleChange} 
+                value={person.artwork.title}
+              />
+            </lable>
+            <lable>
+              city: 
+              <input 
+                name="city" 
+                onChange={handleTitleChange} 
+                value={person.artwork.city}
+              />
+            </lable>
+          </>
+        )
+      }
+      const container = document.getElementById("root");
+      const root = ReactDOM.createRoot(container);
+      root.render(<PersonInfos />);
+    </script>
+  </body>
+</html>

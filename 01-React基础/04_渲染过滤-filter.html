@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+    <!-- Don't use this in production: -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+      const people = [
+        {
+          id: 0,
+          name: '凯瑟琳·约翰逊',
+          profession: '数学家',
+        },
+        {
+          id: 1,
+          name: '马里奥·莫利纳',
+          profession: '化学家',
+        },
+        {
+          id: 2,
+          name: '穆罕默德·阿卜杜勒·萨拉姆',
+          profession: '物理学家',
+        },
+        {
+          id: 3,
+          name: '珀西·莱温·朱利亚',
+          profession: '化学家',
+        },
+        {
+          id: 4,
+          name: '苏布拉马尼扬·钱德拉塞卡',
+          profession: '天体物理学家',
+        },
+      ];
+      // 只显示化学家的名字
+      function FilterRender() {
+        // 1. 过滤
+        const filterList = people.filter(item => {
+          return item.profession === '化学家'
+        })
+        // 2. 遍历
+        const mapList = filterList.map(item => {
+          return <li key={item.id}>{item.name}</li>
+        })
+
+        return <ul>{mapList}</ul>
+      }
+      
+      const container = document.getElementById("root");
+      const root = ReactDOM.createRoot(container);
+      root.render(<FilterRender />);
+      
+    </script>
+  </body>
+</html>
