@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+    <!-- Don't use this in production: -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+      let nextId = 3;
+      const initialTasks = [
+        { id: 0, text: "参观卡夫卡博物馆", done: true },
+        { id: 1, text: "看木偶戏", done: true },
+        { id: 2, text: "打卡列侬墙", done: true },
+      ];
+
+      function TaskApp() {
+        const [tasks, setTasks] = React.useState(initialTasks);
+
+        function handleAddTask(text) {
+          setTasks([
+            ...tasks,
+            {
+              id: nextId++,
+              text: text,
+              done: true,
+            },
+          ]);
+        }
+
+        function handleChangTask(id, isEdit, text) {
+          setTasks(
+            tasks.map((item) => {
+              if (item.id === id) {
+                return { ...item, done: !isEdit, text: text };
+              } else {
+                return item;
+              }
+            })
+          );
+        }
+
+        function handleDeleteTask(id) {
+          setTasks(
+            tasks.filter(item => item.id !== id)
+          )
+        }
+        return (
+          <>
+            <h1>布达拉宫行乘安排</h1>
+            <AddTask onAddTask={handleAddTask} />
+            <AddList
+              tasks={tasks}
+              onChangTask={handleChangTask}
+              onDeleteTask={handleDeleteTask}
+            />
+          </>
+        );
+      }
+
+      function AddTask({ onAddTask }) {
+        return (
+          <div>
+            <input type="text" id="taskInput" />
+            <button
+              onClick={() => {
+                let text = document.getElementById("taskInput").value;
+                onAddTask(text);
+              }}
+            >
+              添加
+            </button>
+          </div>
+        );
+      }
+
+      function AddList({ tasks, onChangTask, onDeleteTask }) {
+        // defaultValue属性可用于指定输入框的默认值，并且用户可以编辑和修改该值。
+        return (
+          <>
+            {tasks.map((item) => {
+              return (
+                <div key={item.id}>
+                  <h3></h3>
+                  {item.done ? (
+                    // 注意, 这里是jsx渲染, 需要使用一个包裹元素将多个元素包裹起来
+                    <>
+                      <input type="checkbox" />
+                      {item.text}
+                      <button
+                        onClick={() => {
+                          onChangTask(item.id, item.done, item.text);
+                        }}
+                      >
+                        编辑
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <input type="checkbox" />
+                      <input type="text" defaultValue={item.text} id="listInput" />
+                      <button
+                        onClick={() => {
+                          let text = document.getElementById("listInput").value;
+                          onChangTask(item.id, item.done, text)
+                        }}
+                      >
+                        保存
+                      </button>
+                    </>
+                  )}
+                  <button onClick={() => {
+                    onDeleteTask(item.id)
+                  }}>删除</button>
+                </div>
+              );
+            })}
+          </>
+        );
+      }
+      const container = document.getElementById("root");
+      const root = ReactDOM.createRoot(container);
+      root.render(<TaskApp />);
+    </script>
+  </body>
+</html>

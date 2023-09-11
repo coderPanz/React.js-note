@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+    <!-- Don't use this in production: -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+      let nextId = 3;
+      const initialTasks = [
+        { id: 0, text: "参观卡夫卡博物馆", done: true },
+        { id: 1, text: "看木偶戏", done: true },
+        { id: 2, text: "打卡列侬墙", done: true },
+      ];
+
+      function TaskApp() {
+        const [tasks, dispatch] = React.useReducer(tasksReducer, initialTasks);
+
+        function handleAddTask(text) {
+          dispatch({
+            type: "add",
+            text: text,
+            id: nextId++,
+          });
+        }
+
+        function handleChangTask(id, isEdit, text) {
+          dispatch({
+            type: "change",
+            id: id,
+            isEdit: isEdit,
+            text: text,
+          })
+        }
+
+        function handleDeleteTask(id) {
+          dispatch({
+            type: 'delete',
+            id: id
+          })
+        }
+        return (
+          <>
+            <h1>布达拉宫行乘安排</h1>
+            <AddTask onAddTask={handleAddTask} />
+            <AddList
+              tasks={tasks}
+              onChangTask={handleChangTask}
+              onDeleteTask={handleDeleteTask}
+            />
+          </>
+        );
+      }
+
+      function AddTask({ onAddTask }) {
+        return (
+          <div>
+            <input type="text" id="taskInput" />
+            <button
+              onClick={() => {
+                let text = document.getElementById("taskInput").value;
+                onAddTask(text);
+              }}
+            >
+              添加
+            </button>
+          </div>
+        );
+      }
+
+      function AddList({ tasks, onChangTask, onDeleteTask }) {
+        return (
+          <>
+            {tasks.map((item) => {
+              return (
+                <div key={item.id}>
+                  <h3></h3>
+                  {item.done ? (
+                    <>
+                      <input type="checkbox" />
+                      {item.text}
+                      <button
+                        onClick={() => {
+                          onChangTask(item.id, item.done, item.text);
+                        }}
+                      >
+                        编辑
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <input type="checkbox" />
+                      <input
+                        type="text"
+                        defaultValue={item.text}
+                        id="listInput"
+                      />
+                      <button
+                        onClick={() => {
+                          let text = document.getElementById("listInput").value;
+                          onChangTask(item.id, item.done, text);
+                        }}
+                      >
+                        保存
+                      </button>
+                    </>
+                  )}
+                  <button
+                    onClick={() => {
+                      onDeleteTask(item.id);
+                    }}
+                  >
+                    删除
+                  </button>
+                </div>
+              );
+            })}
+          </>
+        );
+      }
+
+      // 但是在 reducers 中使用 switch 语句 是一种惯例。两种方式结果是相同的，但 switch 语句读起来一目了然。
+      // 记住return不能少, 如果你忘了 return，代码就会 进入 到下一个 case，这就会导致错误！
+      function tasksReducer(tasks, action) {
+        switch (action.type) {
+          case 'add': {
+            return [
+              ...tasks,
+              {
+                id: action.id,
+                text: action.text,
+                done: true
+              }
+            ]
+          }
+          case 'change': {
+            return tasks.map(item => {
+              if(item.id === action.id) {
+                return { ...item, done: !action.isEdit, text: action.text }
+              } else {
+                return item
+              }
+            })
+          }
+          case 'delete': {
+            return tasks.filter(item => item.id !== action.id)
+          }
+          default: {
+            throw Error('未知 action: ' + action.type);
+          }
+        }
+      }
+      const container = document.getElementById("root");
+      const root = ReactDOM.createRoot(container);
+      root.render(<TaskApp />);
+    </script>
+  </body>
+</html>
